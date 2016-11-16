@@ -16,6 +16,7 @@ public class Visualizer {
 
         for (int i = 0; i < data.vertices.size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
+            node.addAttribute("ui.label", data.vertices.get(i).getId());
             stylize(node, data.vertices.get(i).getGroup());
         }
         for (MyEdge e : data.edges) {

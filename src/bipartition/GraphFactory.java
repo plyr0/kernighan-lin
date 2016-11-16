@@ -14,8 +14,8 @@ public class GraphFactory {
         int edges = 0;
         Graph graph = new Graph(vertices);
         while (edges < edgesTo) {
-            int v1 = random.nextInt(vertices - 1);
-            int v2 = random.nextInt(vertices - 1);
+            int v1 = random.nextInt(vertices);
+            int v2 = random.nextInt(vertices);
             int w = random.nextInt(20) + 1;
             if (v1 != v2 && graph.addEdge(v1, v2, w)) {
                 edges++;
