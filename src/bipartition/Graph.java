@@ -21,10 +21,7 @@ public class Graph {
     public void assumeNoIsolated() {
         for (MyVertex v : vertices) {
             if (!vertexInEdges(v)) {
-                System.out.println("add " + v);
-                addEdge(v.getId(),
-                        (v.getId() + 1) % vertices.size(),
-                        22);
+                addEdge(v.getId(), (v.getId() + 1) % vertices.size(), 22);
             }
         }
     }
@@ -48,7 +45,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphFactory.generate(20, .25f);
+        Graph g = GraphFactory.generate(20, .15f);
         System.out.println(g.toString());
         Visualizer.visualize(g);
     }

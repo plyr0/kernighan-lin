@@ -43,10 +43,10 @@ public class Visualizer {
     private static void stylize(Node node, MyVertex.Groups color) {
         switch (color) {
             case Left:
-                node.addAttribute("ui.style", "fill-color: rgb(0,100,255);");
+                node.addAttribute("ui.style", "fill-color: rgb(0,0,255);");
                 break;
             case Right:
-                node.addAttribute("ui.style", "fill-color: rgb(255,100,255);");
+                node.addAttribute("ui.style", "fill-color: rgb(255,0,0);");
                 break;
         }
     }
