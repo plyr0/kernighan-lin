@@ -9,18 +9,18 @@ import org.graphstream.ui.view.Viewer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Visualizer {
+class Visualizer {
 
-    public static void visualize(Graph data) {
+    static void visualize(Graph data) {
         SingleGraph graph = new SingleGraph("kcolor");
 
         for (int i = 0; i < data.vertices.size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
             node.addAttribute("ui.label", data.vertices.get(i).getId());
-            stylize(node, data.vertices.get(i).getGroup());
+            //stylize(node, data.vertices.get(i).getGroup());
         }
         for (MyEdge e : data.edges) {
-            Edge edge = graph.addEdge(e.getV1().getId() + "-" + e.getV2().getId(), e.getV1().getId(), e.getV2().getId());
+            Edge edge = graph.addEdge(e.getV1() + "-" + e.getV2(), e.getV1(), e.getV2());
             edge.addAttribute("ui.label", e.getWeight());
         }
         Viewer viewer = graph.display();
@@ -41,7 +41,7 @@ public class Visualizer {
         });
     }
 
-    private static void stylize(Node node, MyVertex.Groups color) {
+    /*private static void stylize(Node node, MyVertex.Groups color) {
         switch (color) {
             case Left:
                 node.addAttribute("ui.style", "fill-color: rgb(0,0,255);");
@@ -50,5 +50,5 @@ public class Visualizer {
                 node.addAttribute("ui.style", "fill-color: rgb(255,0,0);");
                 break;
         }
-    }
+    }*/
 }

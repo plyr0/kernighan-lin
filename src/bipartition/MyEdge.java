@@ -1,12 +1,12 @@
 package bipartition;
 
 public class MyEdge {
-    private MyVertex v1;
-    private MyVertex v2;
+    private int v1;
+    private int v2;
     private int weight;
 
-    public MyEdge(MyVertex v1, MyVertex v2, int weight) {
-        if (v1.getId() <= v2.getId()) {
+    MyEdge(int v1, int v2, int weight) {
+        if (v1 <= v2) {
             this.v1 = v1;
             this.v2 = v2;
         } else {
@@ -16,15 +16,15 @@ public class MyEdge {
         this.weight = weight;
     }
 
-    public MyVertex getV1() {
+    int getV1() {
         return v1;
     }
 
-    public MyVertex getV2() {
+    int getV2() {
         return v2;
     }
 
-    public int getWeight() {
+    int getWeight() {
         return weight;
     }
 
