@@ -7,25 +7,26 @@ import java.util.List;
 public class KernighanLin {
     private List<MyVertex> inA;
     private List<MyVertex> inB;
-    private List<MyVertex> outA;
-    private List<MyVertex> outB;
+    private List<MyVertex> A;
+    private List<MyVertex> B;
     private List<Swap> swaps;
     Graph graph;
 
     KernighanLin(Graph g) {
         graph = g;
         int n = g.vertices.size();
-        outA = new ArrayList<>(n / 2);
-        outB = new ArrayList<>(n / 2);
+        A = new ArrayList<>(n / 2);
+        B = new ArrayList<>(n / 2);
         inA = new ArrayList<>(n / 2);
         inB = new ArrayList<>(n / 2);
         swaps = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             MyVertex v = g.vertices.get(i);
-            (i % 2 == 0 ? inA : inB).add(v);
+            if (i % 2 == 0) inA.add(v);
+            else inB.add(v);
         }
-        outA.addAll(inA);
-        outB.addAll(inB);
+        A.addAll(inA);
+        B.addAll(inB);
     }
 
     @Override
@@ -33,8 +34,8 @@ public class KernighanLin {
         return "KernighanLin{" +
                 ", \ninA=" + inA +
                 ", \ninB=" + inB +
-                ", \noutA=" + outA +
-                ", \noutB=" + outB +
+                ", \noutA=" + A +
+                ", \noutB=" + B +
                 '}';
     }
 
@@ -45,17 +46,16 @@ public class KernighanLin {
         Visualizer.visualize(kl);
         System.out.println(kl.toString());
         System.out.println("bipartitionCost: " + kl.bipartitionCost());
-        /*for (MyVertex v : kl.graph.vertices) {
-            System.out.println(v.getId() + " cost: " + kl.vertexCost(v));
-        }*/
         kl.step();
         System.out.println(kl.toString());
+        System.out.println("bipartitionCost: " + kl.bipartitionCost());
+
     }
 
     int vertexCost(MyVertex vertex) {
         int external = 0;
         int internal = 0;
-        boolean subsetA1 = outA.contains(vertex);
+        boolean subsetA1 = A.contains(vertex);
         for (int a : vertex.getNeighbours()) {
             boolean subsetA2 = isInSubsetA(a);
             MyEdge edge = graph.edge(vertex.getId(), a);
@@ -69,7 +69,7 @@ public class KernighanLin {
     }
 
     boolean isInSubsetA(int vid) {
-        for (MyVertex v : outA) {
+        for (MyVertex v : A) {
             if (v.getId() == vid) return true;
         }
         return false;
@@ -116,10 +116,10 @@ public class KernighanLin {
 
     void swap(MyVertex v1, MyVertex v2) {
         assert isInSubsetA(v1.getId()) != isInSubsetA(v2.getId());
-        outA.remove(v1);
-        outB.remove(v2);
-        outA.add(v2);
-        outB.add(v1);
+        A.remove(v1);
+        B.remove(v2);
+        A.add(v2);
+        B.add(v1);
     }
 }
 
