@@ -44,10 +44,9 @@ public class Graph {
                 '}';
     }
 
-    boolean addEdge(int v1, int v2, int w)
-    {
-        if(hasEdge(v1,v2)){
-            return  false;
+    boolean addEdge(int v1, int v2, int w) {
+        if (edge(v1, v2) != null) {
+            return false;
         }
         MyEdge myEdge = new MyEdge(v1, v2, w);
         edges.add(myEdge);
@@ -56,12 +55,12 @@ public class Graph {
         return true;
     }
 
-    private boolean hasEdge(int v1, int v2) {
+    public MyEdge edge(int v1, int v2) {
         for (MyEdge e : edges) {
             if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
-                return true;
+                return e;
             }
         }
-        return false;
+        return null;
     }
 }

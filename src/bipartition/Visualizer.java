@@ -11,13 +11,14 @@ import java.awt.event.MouseEvent;
 
 class Visualizer {
 
-    static void visualize(Graph data) {
+    static void visualize(KernighanLin kl) {
+        Graph data = kl.graph;
         SingleGraph graph = new SingleGraph("kcolor");
 
         for (int i = 0; i < data.vertices.size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
             node.addAttribute("ui.label", data.vertices.get(i).getId());
-            //stylize(node, data.vertices.get(i).getGroup());
+            stylize(node, kl.isInSubsetA(i));
         }
         for (MyEdge e : data.edges) {
             Edge edge = graph.addEdge(e.getV1() + "-" + e.getV2(), e.getV1(), e.getV2());
@@ -41,14 +42,13 @@ class Visualizer {
         });
     }
 
-    /*private static void stylize(Node node, MyVertex.Groups color) {
-        switch (color) {
-            case Left:
-                node.addAttribute("ui.style", "fill-color: rgb(0,0,255);");
-                break;
-            case Right:
-                node.addAttribute("ui.style", "fill-color: rgb(255,0,0);");
-                break;
+    private static void stylize(Node node, boolean isInA) {
+        if (isInA) {
+            node.addAttribute("ui.style", "fill-color: rgb(0,0,255);");
+            node.setAttribute("x", -50);
+        } else {
+            node.addAttribute("ui.style", "fill-color: rgb(255,0,0);");
+            node.setAttribute("x", 50);
         }
-    }*/
+    }
 }
