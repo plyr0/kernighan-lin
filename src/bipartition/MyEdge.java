@@ -6,13 +6,9 @@ public class MyEdge {
     private int weight;
 
     MyEdge(int v1, int v2, int weight) {
-        if (v1 <= v2) {
-            this.v1 = v1;
-            this.v2 = v2;
-        } else {
-            this.v1 = v2;
-            this.v2 = v1;
-        }
+        assert v1 != v2;
+        this.v1 = Math.min(v1, v2);
+        this.v2 = Math.max(v1, v2);
         this.weight = weight;
     }
 

@@ -44,19 +44,24 @@ public class Graph {
                 '}';
     }
 
-    boolean addEdge(int v1, int v2, int w) {
-        for (MyEdge e : edges) {
-            if (edgeEqual(v1, v2, e)) {
-                return false;
-            }
+    boolean addEdge(int v1, int v2, int w)
+    {
+        if(hasEdge(v1,v2)){
+            return  false;
         }
         MyEdge myEdge = new MyEdge(v1, v2, w);
         edges.add(myEdge);
+        vertices.get(v1).addNeighbour(v2);
+        vertices.get(v2).addNeighbour(v1);
         return true;
     }
 
-    private boolean edgeEqual(int v1, int v2, MyEdge e) {
-        return (e.getV1() == v1 && e.getV2() == v2) ||
-                (e.getV2() == v1 && e.getV1() == v2);
+    private boolean hasEdge(int v1, int v2) {
+        for (MyEdge e : edges) {
+            if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
+                return true;
+            }
+        }
+        return false;
     }
 }
