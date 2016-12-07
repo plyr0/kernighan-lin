@@ -18,7 +18,7 @@ class Visualizer {
         for (int i = 0; i < data.vertices.size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
             node.addAttribute("ui.label", data.vertices.get(i).getId());
-            stylize(node, kernighanLin.isInSubsetA(i));
+            stylizeNode(node, kernighanLin.isInSubsetA(i));
         }
         for (Edge e : data.edges) {
             int v1 = e.getV1();
@@ -26,14 +26,12 @@ class Visualizer {
             org.graphstream.graph.Edge edge = graph.addEdge(v1 + "-" + v2, v1, v2);
             edge.addAttribute("ui.label", e.getWeight());
 
-            int color = e.getWeight() * 20;
-            edge.addAttribute("ui.style",
-                    String.format("fill-color: rgb(%d, %d, %d);", color, color, color)
-            );
             if (kernighanLin.isInSubsetA(v1) == kernighanLin.isInSubsetA(v2)) {
-                edge.addAttribute("ui.style", "shape: blob; " +
-                        String.format("fill-color: rgb(%d, %d, %d);", color, color, color)
-                );
+                if (kernighanLin.isInSubsetA(v1)) {
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(0, 0, 255);");
+                } else {
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(255, 0, 0);");
+                }
             }
         }
         Viewer viewer = graph.display();
@@ -54,7 +52,7 @@ class Visualizer {
         viewer.getDefaultView().setToolTipText(text);
     }
 
-    private static void stylize(Node node, boolean isInA) {
+    private static void stylizeNode(Node node, boolean isInA) {
         if (isInA) {
             node.addAttribute("ui.style", "fill-color: rgb(0,0,255); text-color: rgb(255,255,0); size: 15px;");
         } else {

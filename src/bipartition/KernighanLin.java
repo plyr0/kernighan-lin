@@ -1,6 +1,7 @@
 package bipartition;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class KernighanLin {
     private List<Vertex> A;
@@ -28,7 +29,7 @@ public class KernighanLin {
     }
 
     public static void main(String[] args) {
-        Graph g = GraphFactory.generate(20, .10f);
+        Graph g = GraphFactory.generate(20, .1f);
         System.out.println(g.toString());
         KernighanLin kernighanLin = new KernighanLin(g);
         System.out.println(kernighanLin.toString());
@@ -40,6 +41,8 @@ public class KernighanLin {
 
     @Override
     public String toString() {
+        A = A.stream().sorted().collect(Collectors.toList());
+        B = B.stream().sorted().collect(Collectors.toList());
         return "A=" + A +
                 "\nB=" + B +
                 "\nCost=" + bipartitionCutCost();

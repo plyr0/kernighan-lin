@@ -1,17 +1,14 @@
 package bipartition;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Graph {
     List<Vertex> vertices;
-    Set<Edge> edges;
+    SortedSet<Edge> edges;
 
     Graph(int n) {
         vertices = new ArrayList<>(n);
-        edges = new HashSet<>();
+        edges = new TreeSet<>();
         for (int i = 0; i < n; i++) {
             Vertex v = new Vertex(i);
             vertices.add(v);

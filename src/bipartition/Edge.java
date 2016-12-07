@@ -1,6 +1,6 @@
 package bipartition;
 
-public class Edge {
+public class Edge implements Comparable<Edge> {
     private int v1;
     private int v2;
     private int weight;
@@ -31,5 +31,12 @@ public class Edge {
                 ", v2=" + v2 +
                 ", weight=" + weight +
                 "}";
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+        int comp = Integer.compare(v1, o.v1);
+        int comp2 = Integer.compare(v2, o.v2);
+        return comp == 0 ? comp2 : comp;
     }
 }

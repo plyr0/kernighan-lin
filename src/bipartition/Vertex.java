@@ -3,7 +3,7 @@ package bipartition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
     private int id;
     private List<Integer> neighbours;
     private boolean lock = false;
@@ -40,5 +40,10 @@ public class Vertex {
     @Override
     public String toString() {
         return id + "-" + neighbours;
+    }
+
+    @Override
+    public int compareTo(Vertex o) {
+        return Integer.compare(id, o.id);
     }
 }
