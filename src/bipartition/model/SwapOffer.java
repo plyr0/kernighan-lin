@@ -1,4 +1,4 @@
-package bipartition;
+package bipartition.model;
 
 public class SwapOffer {
     public Vertex a;

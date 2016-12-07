@@ -1,10 +1,13 @@
-package bipartition;
+package bipartition.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Graph {
-    List<Vertex> vertices;
-    SortedSet<Edge> edges;
+    private List<Vertex> vertices;
+    private SortedSet<Edge> edges;
 
     public Graph(int n) {
         vertices = new ArrayList<>(n);
@@ -51,5 +54,13 @@ public class Graph {
             }
         }
         return null;
+    }
+
+    public List<Vertex> getVertices() {
+        return vertices;
+    }
+
+    public SortedSet<Edge> getEdges() {
+        return edges;
     }
 }

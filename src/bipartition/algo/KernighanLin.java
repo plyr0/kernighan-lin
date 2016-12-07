@@ -1,4 +1,9 @@
-package bipartition;
+package bipartition.algo;
+
+import bipartition.model.Edge;
+import bipartition.model.Graph;
+import bipartition.model.SwapOffer;
+import bipartition.model.Vertex;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -6,13 +11,13 @@ import java.util.stream.Collectors;
 public class KernighanLin {
     private List<Vertex> A;
     private List<Vertex> B;
-    List<SwapOffer> swapOffers;
-    Graph graph;
-    int n, nHalf;
+    private List<SwapOffer> swapOffers;
+    private Graph graph;
+    private int n, nHalf;
 
     public KernighanLin(Graph g) {
         graph = g;
-        n = g.vertices.size();
+        n = g.getVertices().size();
         nHalf = n / 2;
         A = new ArrayList<>(n / 2);
         B = new ArrayList<>(n / 2);
@@ -21,7 +26,7 @@ public class KernighanLin {
 
     private void preliminaryBipartition(Graph g) {
         for (int i = 0; i < n; i++) {
-            Vertex v = g.vertices.get(i);
+            Vertex v = g.getVertices().get(i);
             if (i % 2 == 0) A.add(v);
             else B.add(v);
         }
@@ -63,7 +68,7 @@ public class KernighanLin {
     }
 
     private void unlockAllVertices() {
-        for (Vertex v : graph.vertices) {
+        for (Vertex v : graph.getVertices()) {
             v.setLock(false);
         }
     }
@@ -97,6 +102,7 @@ public class KernighanLin {
                 }
             }
         }
+        assert bestEdgeVertexInA != null;
         bestEdgeVertexInA.setLock(true);
         bestEdgeVertexInB.setLock(true);
         return new SwapOffer(bestEdgeVertexInA, bestEdgeVertexInB, bestGain);
@@ -104,7 +110,7 @@ public class KernighanLin {
 
     public int bipartitionCutCost() {
         int costAll = 0;
-        for (Edge edge : graph.edges) {
+        for (Edge edge : graph.getEdges()) {
             boolean inA1 = isInSubsetA(edge.getV1());
             boolean inA2 = isInSubsetA(edge.getV2());
             if (inA1 != inA2) costAll += edge.getWeight();
@@ -117,7 +123,7 @@ public class KernighanLin {
         int internal = 0;
         boolean subsetA1 = A.contains(vertex);
         for (int n : vertex.getNeighbours()) {
-            if (graph.vertices.get(n).isLock())
+            if (graph.getVertices().get(n).isLock())
                 continue;
             boolean subsetA2 = isInSubsetA(n);
             Edge edge = graph.tryFindEdge(vertex.getId(), n);
@@ -145,5 +151,9 @@ public class KernighanLin {
         B.remove(v2);
         A.add(v2);
         B.add(v1);
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 }

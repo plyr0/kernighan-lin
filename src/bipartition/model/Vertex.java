@@ -1,4 +1,4 @@
-package bipartition;
+package bipartition.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +8,13 @@ public class Vertex implements Comparable<Vertex> {
     private List<Integer> neighbours;
     private boolean lock = false;
 
-    Vertex(int id) {
+    public Vertex(int id) {
         this.id = id;
         neighbours = new ArrayList<>();
     }
 
     public void addNeighbour(int other) {
         neighbours.add(other);
-    }
-
-    public boolean hasNeighbour(int other) {
-        return neighbours.contains(other);
     }
 
     public List<Integer> getNeighbours() {

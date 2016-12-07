@@ -1,5 +1,8 @@
 package bipartition;
 
+import bipartition.algo.KernighanLin;
+import bipartition.model.Edge;
+import bipartition.model.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -10,16 +13,16 @@ import java.awt.event.MouseEvent;
 
 class Visualizer {
     public static void visualize(KernighanLin kernighanLin, String text) {
-        Graph data = kernighanLin.graph;
+        Graph data = kernighanLin.getGraph();
         SingleGraph graph = new SingleGraph("kcolor");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
-        for (int i = 0; i < data.vertices.size(); i++) {
+        for (int i = 0; i < data.getVertices().size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
-            node.addAttribute("ui.label", data.vertices.get(i).getId());
+            node.addAttribute("ui.label", data.getVertices().get(i).getId());
             stylizeNode(node, kernighanLin.isInSubsetA(i));
         }
-        for (Edge e : data.edges) {
+        for (Edge e : data.getEdges()) {
             int v1 = e.getV1();
             int v2 = e.getV2();
             org.graphstream.graph.Edge edge = graph.addEdge(v1 + "-" + v2, v1, v2);

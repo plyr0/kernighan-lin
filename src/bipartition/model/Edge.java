@@ -1,4 +1,4 @@
-package bipartition;
+package bipartition.model;
 
 public class Edge implements Comparable<Edge> {
     private int v1;

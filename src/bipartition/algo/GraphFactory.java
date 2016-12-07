@@ -1,4 +1,7 @@
-package bipartition;
+package bipartition.algo;
+
+import bipartition.model.Graph;
+import bipartition.model.Vertex;
 
 import java.util.Random;
 
@@ -33,9 +36,9 @@ public class GraphFactory {
     }
 
     private static void assumeNoIsolated(Graph graph) {
-        for (Vertex v : graph.vertices) {
+        for (Vertex v : graph.getVertices()) {
             if (!graph.vertexInEdges(v)) {
-                graph.addEdge(v.getId(), (v.getId() + 1) % graph.vertices.size(), getNewWeight());
+                graph.addEdge(v.getId(), (v.getId() + 1) % graph.getVertices().size(), getNewWeight());
             }
         }
     }

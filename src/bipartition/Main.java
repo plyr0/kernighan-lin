@@ -1,12 +1,16 @@
 package bipartition;
 
+import bipartition.algo.GraphFactory;
+import bipartition.algo.KernighanLin;
+import bipartition.model.Graph;
+
 public class Main {
     public static void main(String[] args) {
         Graph g;
-        if(args.length>0 && args[0].equals('n')){
+        if(args.length>0 && args[0].equals("n")){
             g = GraphFactory.generate(40, .05f, true);
         } else {
-            g = GraphFactory.generate(40, .05f);
+            g = GraphFactory.generate(40, .05f, false);
         }
         System.out.println(g.toString());
         KernighanLin kernighanLin = new KernighanLin(g);
