@@ -1,64 +1,135 @@
 package bipartition;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class KernighanLin {
-    private List<MyVertex> inA;
-    private List<MyVertex> inB;
-    private List<MyVertex> A;
-    private List<MyVertex> B;
-    private List<Swap> swaps;
+    private List<Vertex> A;
+    private List<Vertex> B;
+    List<Swap> swaps;
     Graph graph;
+    int n, nHalf;
 
     KernighanLin(Graph g) {
         graph = g;
-        int n = g.vertices.size();
+        n = g.vertices.size();
+        nHalf = n / 2;
         A = new ArrayList<>(n / 2);
         B = new ArrayList<>(n / 2);
-        inA = new ArrayList<>(n / 2);
-        inB = new ArrayList<>(n / 2);
-        swaps = new LinkedList<>();
+        swaps = new ArrayList<>(nHalf);
+        preliminaryBipartition(g);
+    }
+
+    private void preliminaryBipartition(Graph g) {
         for (int i = 0; i < n; i++) {
-            MyVertex v = g.vertices.get(i);
-            if (i % 2 == 0) inA.add(v);
-            else inB.add(v);
+            Vertex v = g.vertices.get(i);
+            if (i % 2 == 0) A.add(v);
+            else B.add(v);
         }
-        A.addAll(inA);
-        B.addAll(inB);
+    }
+
+    public static void main(String[] args) {
+        Graph g = GraphFactory.generate(20, .10f);
+        System.out.println(g.toString());
+        KernighanLin kernighanLin = new KernighanLin(g);
+        System.out.println(kernighanLin.toString());
+        Visualizer.visualize(kernighanLin);
+        kernighanLin.kernighanLin();
+        System.out.println(kernighanLin.toString());
+        Visualizer.visualize(kernighanLin);
     }
 
     @Override
     public String toString() {
-        return "KernighanLin{" +
-                ", \ninA=" + inA +
-                ", \ninB=" + inB +
-                ", \noutA=" + A +
-                ", \noutB=" + B +
-                '}';
+        return "A=" + A +
+                "\nB=" + B +
+                "\nCost=" + bipartitionCutCost();
     }
 
-    public static void main(String[] args) {
-        Graph g = GraphFactory.generate(20, .15f);
-        System.out.println(g.toString());
-        KernighanLin kl = new KernighanLin(g);
-        Visualizer.visualize(kl);
-        System.out.println(kl.toString());
-        System.out.println("bipartitionCost: " + kl.bipartitionCost());
-        kl.step();
-        System.out.println(kl.toString());
-        System.out.println("bipartitionCost: " + kl.bipartitionCost());
+    public void kernighanLin() {
+        int Gk;
+        do {
+            computeDvAll();
+            for (int i = 0; i < nHalf; i++) {
+                swaps.add(singleSwap());
+            }
 
+            Gk = swaps.get(0).cost;
+            int kBestStep = 0;
+            for (int i = 1, tempGk; i < nHalf; i++) {
+                tempGk = swaps.get(i).cost;
+                if (tempGk > Gk) {
+                    Gk = tempGk;
+                    kBestStep = i;
+                }
+            }
+            cancelSwapsFrom(kBestStep);
+            for(Vertex v : graph.vertices){
+                v.setLock(false);
+            }
+        } while (Gk <= 0);
     }
 
-    int vertexCost(MyVertex vertex) {
+    private void cancelSwapsFrom(int kBestStep) {
+        for (int i = kBestStep; i < nHalf; i++) {
+            Swap swap = swaps.get(i);
+            Vertex fromA = swap.a;
+            Vertex fromB = swap.b;
+            swap(fromA, fromB);
+        }
+    }
+
+    private Swap singleSwap() {
+        Vertex bestEdgeVertexInA = null;
+        Vertex bestEdgeVertexInB = null;
+        int bestGain = Integer.MIN_VALUE;
+        for (Vertex a : A) {
+            if (a.isLock()) continue;
+            for (Vertex b : B) {
+                if (b.isLock()) continue;
+                Edge edge = graph.tryFindEdge(a.getId(), b.getId());
+                int weight = 0;
+                if (edge != null) {
+                    weight = edge.getWeight();
+                }
+                int gain = vertexCost(a) + vertexCost(b) - 2 * weight;
+                if (gain > bestGain) {
+                    bestEdgeVertexInA = a;
+                    bestEdgeVertexInB = b;
+                    bestGain = gain;
+                }
+            }
+        }
+        bestEdgeVertexInA.setLock(true);
+        bestEdgeVertexInB.setLock(true);
+        swap(bestEdgeVertexInA, bestEdgeVertexInB);
+        return new Swap(bestEdgeVertexInB, bestEdgeVertexInA, bipartitionCutCost());
+    }
+
+    private void computeDvAll() {
+        for (Vertex v : graph.vertices) {
+            if (!v.isLock())
+                v.setDvCostReduction(vertexCost(v));
+        }
+    }
+
+    int bipartitionCutCost() {
+        int costAll = 0;
+        for (Edge edge : graph.edges) {
+            boolean inA1 = isInSubsetA(edge.getV1());
+            boolean inA2 = isInSubsetA(edge.getV2());
+            if (inA1 != inA2) costAll += edge.getWeight();
+        }
+        return costAll;
+    }
+
+    public int vertexCost(Vertex vertex) {
         int external = 0;
         int internal = 0;
         boolean subsetA1 = A.contains(vertex);
         for (int a : vertex.getNeighbours()) {
             boolean subsetA2 = isInSubsetA(a);
-            MyEdge edge = graph.edge(vertex.getId(), a);
+            Edge edge = graph.tryFindEdge(vertex.getId(), a);
+            assert edge != null;
             if (subsetA1 == subsetA2) {
                 internal += edge.getWeight();
             } else {
@@ -69,72 +140,18 @@ public class KernighanLin {
     }
 
     boolean isInSubsetA(int vid) {
-        for (MyVertex v : A) {
+        for (Vertex v : A) {
             if (v.getId() == vid) return true;
         }
         return false;
     }
 
-    void step() {
-        MyVertex bestEdgeV1 = null;
-        MyVertex bestEdgeV2 = null;
-        int bestGain = Integer.MIN_VALUE;
-
-        for (MyVertex a : inA) {
-            for (MyVertex b : inB) {
-                MyEdge edge = graph.edge(a.getId(), b.getId());
-                int weight;
-                if (edge == null) {
-                    weight = 0;
-                } else {
-                    weight = edge.getWeight();
-                }
-                int gain = vertexCost(a) + vertexCost(b) - 2 * weight;
-                if (gain > bestGain) {
-                    bestEdgeV1 = a;
-                    bestEdgeV2 = b;
-                    bestGain = gain;
-                }
-            }
-        }
-        System.out.println(bestEdgeV1.getId() + " " + bestEdgeV2.getId() + " " + bestGain);
-        swap(bestEdgeV1, bestEdgeV2);
-        swaps.add(new Swap(bestEdgeV1, bestEdgeV2, bestGain));
-        inA.remove(bestEdgeV1);
-        inB.remove(bestEdgeV2);
-    }
-
-    int bipartitionCost() {
-        int costAll = 0;
-        for (MyEdge edge : graph.edges) {
-            boolean inA1 = isInSubsetA(edge.getV1());
-            boolean inA2 = isInSubsetA(edge.getV2());
-            if (inA1 != inA2) costAll += edge.getWeight();
-        }
-        return costAll;
-    }
-
-    void swap(MyVertex v1, MyVertex v2) {
-        assert isInSubsetA(v1.getId()) != isInSubsetA(v2.getId());
+    void swap(Vertex v1, Vertex v2) {
+        assert isInSubsetA(v1.getId());
+        assert !isInSubsetA(v2.getId());
         A.remove(v1);
         B.remove(v2);
         A.add(v2);
         B.add(v1);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

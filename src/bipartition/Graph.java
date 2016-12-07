@@ -6,29 +6,21 @@ import java.util.List;
 import java.util.Set;
 
 public class Graph {
-    List<MyVertex> vertices;
-    Set<MyEdge> edges;
+    List<Vertex> vertices;
+    Set<Edge> edges;
 
     Graph(int n) {
         vertices = new ArrayList<>(n);
         edges = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            MyVertex v = new MyVertex(i);
+            Vertex v = new Vertex(i);
             vertices.add(v);
         }
     }
 
-    void assumeNoIsolated() {
-        for (MyVertex v : vertices) {
-            if (!vertexInEdges(v)) {
-                addEdge(v.getId(), (v.getId() + 1) % vertices.size(), 22);
-            }
-        }
-    }
-
-    private boolean vertexInEdges(MyVertex v) {
+    boolean vertexInEdges(Vertex v) {
         int id = v.getId();
-        for (MyEdge e : edges) {
+        for (Edge e : edges) {
             if (e.getV1() == id || e.getV2() == id) {
                 return true;
             }
@@ -45,18 +37,18 @@ public class Graph {
     }
 
     boolean addEdge(int v1, int v2, int w) {
-        if (edge(v1, v2) != null) {
+        if (tryFindEdge(v1, v2) != null) {
             return false;
         }
-        MyEdge myEdge = new MyEdge(v1, v2, w);
-        edges.add(myEdge);
+        Edge edge = new Edge(v1, v2, w);
+        edges.add(edge);
         vertices.get(v1).addNeighbour(v2);
         vertices.get(v2).addNeighbour(v1);
         return true;
     }
 
-    public MyEdge edge(int v1, int v2) {
-        for (MyEdge e : edges) {
+    public Edge tryFindEdge(int v1, int v2) {
+        for (Edge e : edges) {
             if (e.getV1() == v1 && e.getV2() == v2 || e.getV1() == v2 && e.getV2() == v1) {
                 return e;
             }

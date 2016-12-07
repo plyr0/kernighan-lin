@@ -1,6 +1,5 @@
 package bipartition;
 
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.View;
@@ -11,18 +10,24 @@ import java.awt.event.MouseEvent;
 
 class Visualizer {
 
-    static void visualize(KernighanLin kl) {
-        Graph data = kl.graph;
+    static void visualize(KernighanLin kernighanLin) {
+        Graph data = kernighanLin.graph;
         SingleGraph graph = new SingleGraph("kcolor");
+        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
         for (int i = 0; i < data.vertices.size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
             node.addAttribute("ui.label", data.vertices.get(i).getId());
-            stylize(node, kl.isInSubsetA(i));
+            stylize(node, kernighanLin.isInSubsetA(i));
         }
-        for (MyEdge e : data.edges) {
-            Edge edge = graph.addEdge(e.getV1() + "-" + e.getV2(), e.getV1(), e.getV2());
+        for (Edge e : data.edges) {
+            int v1 = e.getV1();
+            int v2 = e.getV2();
+            org.graphstream.graph.Edge edge = graph.addEdge(v1 + "-" + v2, v1, v2);
             edge.addAttribute("ui.label", e.getWeight());
+            if (kernighanLin.isInSubsetA(v1) == kernighanLin.isInSubsetA(v2)) {
+                edge.addAttribute("ui.style", "shape: blob;");
+            }
         }
         Viewer viewer = graph.display();
         View view = viewer.getDefaultView();
@@ -44,11 +49,9 @@ class Visualizer {
 
     private static void stylize(Node node, boolean isInA) {
         if (isInA) {
-            node.addAttribute("ui.style", "fill-color: rgb(0,0,255);");
-            node.setAttribute("x", -50);
+            node.addAttribute("ui.style", "fill-color: rgb(0,0,255); text-color: rgb(255,255,0); size: 15px;");
         } else {
-            node.addAttribute("ui.style", "fill-color: rgb(255,0,0);");
-            node.setAttribute("x", 50);
+            node.addAttribute("ui.style", "fill-color: rgb(255,0,0); text-color: rgb(255,255,0); size: 15px, 15px;");
         }
     }
 }

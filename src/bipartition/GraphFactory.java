@@ -16,12 +16,21 @@ public class GraphFactory {
         while (edges < edgesTo) {
             int v1 = random.nextInt(vertices);
             int v2 = random.nextInt(vertices);
-            int w = random.nextInt(20) + 1;
+            int w = random.nextInt(10) + 1;
+            //int w = 1;
             if (v1 != v2 && graph.addEdge(v1, v2, w)) {
                 edges++;
             }
         }
-        graph.assumeNoIsolated();
+        assumeNoIsolated(graph);
         return graph;
+    }
+
+    static void assumeNoIsolated(Graph graph) {
+        for (Vertex v : graph.vertices) {
+            if (!graph.vertexInEdges(v)) {
+                graph.addEdge(v.getId(), (v.getId() + 1) % graph.vertices.size(), new Random().nextInt(10) + 1);
+            }
+        }
     }
 }
