@@ -5,22 +5,22 @@ public class Edge implements Comparable<Edge> {
     private int v2;
     private int weight;
 
-    Edge(int v1, int v2, int weight) {
+    public Edge(int v1, int v2, int weight) {
         assert v1 != v2;
         this.v1 = Math.min(v1, v2);
         this.v2 = Math.max(v1, v2);
         this.weight = weight;
     }
 
-    int getV1() {
+    public int getV1() {
         return v1;
     }
 
-    int getV2() {
+    public int getV2() {
         return v2;
     }
 
-    int getWeight() {
+    public int getWeight() {
         return weight;
     }
 

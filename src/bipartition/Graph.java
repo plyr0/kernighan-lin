@@ -6,7 +6,7 @@ public class Graph {
     List<Vertex> vertices;
     SortedSet<Edge> edges;
 
-    Graph(int n) {
+    public Graph(int n) {
         vertices = new ArrayList<>(n);
         edges = new TreeSet<>();
         for (int i = 0; i < n; i++) {
@@ -15,7 +15,7 @@ public class Graph {
         }
     }
 
-    boolean vertexInEdges(Vertex v) {
+    public boolean vertexInEdges(Vertex v) {
         int id = v.getId();
         for (Edge e : edges) {
             if (e.getV1() == id || e.getV2() == id) {
@@ -33,7 +33,7 @@ public class Graph {
                 '}';
     }
 
-    boolean addEdge(int v1, int v2, int w) {
+    public boolean addEdge(int v1, int v2, int w) {
         if (tryFindEdge(v1, v2) != null) {
             return false;
         }

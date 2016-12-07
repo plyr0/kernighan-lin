@@ -25,7 +25,7 @@ public class Vertex implements Comparable<Vertex> {
         return neighbours;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 

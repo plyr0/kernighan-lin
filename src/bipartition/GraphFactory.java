@@ -4,12 +4,17 @@ import java.util.Random;
 
 public class GraphFactory {
     private static Random random = new Random();
-    private static boolean isOneWeight = false;
+    private static boolean isNonWeightedGraph = false;
 
     public static Graph generate(int vertices, float densityClicque) {
         int cliqueEdges = vertices * (vertices - 1) / 2;
         int edges = Math.round(cliqueEdges * densityClicque);
         return generate(vertices, edges);
+    }
+
+    public static Graph generate(int vertices, float densityClicque, boolean isNonWeightedGraph) {
+        GraphFactory.isNonWeightedGraph = isNonWeightedGraph;
+        return generate(vertices, densityClicque);
     }
 
     public static Graph generate(int vertices, int edgesTo) {
@@ -27,7 +32,7 @@ public class GraphFactory {
         return graph;
     }
 
-    static void assumeNoIsolated(Graph graph) {
+    private static void assumeNoIsolated(Graph graph) {
         for (Vertex v : graph.vertices) {
             if (!graph.vertexInEdges(v)) {
                 graph.addEdge(v.getId(), (v.getId() + 1) % graph.vertices.size(), getNewWeight());
@@ -35,8 +40,8 @@ public class GraphFactory {
         }
     }
 
-    public static int getNewWeight() {
-        if (isOneWeight)
+    private static int getNewWeight() {
+        if (isNonWeightedGraph)
             return 1;
         return random.nextInt(10) + 1;
     }

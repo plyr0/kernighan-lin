@@ -9,8 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 class Visualizer {
-
-    static void visualize(KernighanLin kernighanLin, String text) {
+    public static void visualize(KernighanLin kernighanLin, String text) {
         Graph data = kernighanLin.graph;
         SingleGraph graph = new SingleGraph("kcolor");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -28,9 +27,9 @@ class Visualizer {
 
             if (kernighanLin.isInSubsetA(v1) == kernighanLin.isInSubsetA(v2)) {
                 if (kernighanLin.isInSubsetA(v1)) {
-                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(0, 0, 255);");
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(0, 0, 128);");
                 } else {
-                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(255, 0, 0);");
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(128, 0, 0);");
                 }
             }
         }
@@ -56,7 +55,7 @@ class Visualizer {
         if (isInA) {
             node.addAttribute("ui.style", "fill-color: rgb(0,0,255); text-color: rgb(255,255,0); size: 15px;");
         } else {
-            node.addAttribute("ui.style", "fill-color: rgb(255,0,0); text-color: rgb(255,255,0); size: 15px, 15px;");
+            node.addAttribute("ui.style", "fill-color: rgb(255,0,0); text-color: rgb(255,255,0); size: 15px;");
         }
     }
 }
