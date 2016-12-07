@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 
 class Visualizer {
 
-    static void visualize(KernighanLin kernighanLin) {
+    static void visualize(KernighanLin kernighanLin, String text) {
         Graph data = kernighanLin.graph;
         SingleGraph graph = new SingleGraph("kcolor");
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -25,13 +25,19 @@ class Visualizer {
             int v2 = e.getV2();
             org.graphstream.graph.Edge edge = graph.addEdge(v1 + "-" + v2, v1, v2);
             edge.addAttribute("ui.label", e.getWeight());
+
+            int color = e.getWeight() * 20;
+            edge.addAttribute("ui.style",
+                    String.format("fill-color: rgb(%d, %d, %d);", color, color, color)
+            );
             if (kernighanLin.isInSubsetA(v1) == kernighanLin.isInSubsetA(v2)) {
-                edge.addAttribute("ui.style", "shape: blob;");
+                edge.addAttribute("ui.style", "shape: blob; " +
+                        String.format("fill-color: rgb(%d, %d, %d);", color, color, color)
+                );
             }
         }
         Viewer viewer = graph.display();
         View view = viewer.getDefaultView();
-
         view.addMouseListener(new MouseAdapter() {
             double scale = 1.0;
 
@@ -45,6 +51,7 @@ class Visualizer {
                 view.getCamera().setViewPercent(scale);
             }
         });
+        viewer.getDefaultView().setToolTipText(text);
     }
 
     private static void stylize(Node node, boolean isInA) {

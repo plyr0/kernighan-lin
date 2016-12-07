@@ -32,10 +32,10 @@ public class KernighanLin {
         System.out.println(g.toString());
         KernighanLin kernighanLin = new KernighanLin(g);
         System.out.println(kernighanLin.toString());
-        Visualizer.visualize(kernighanLin);
+        Visualizer.visualize(kernighanLin, "pre");
         kernighanLin.kernighanLin();
         System.out.println(kernighanLin.toString());
-        Visualizer.visualize(kernighanLin);
+        Visualizer.visualize(kernighanLin, "post");
     }
 
     @Override
@@ -48,11 +48,9 @@ public class KernighanLin {
     public void kernighanLin() {
         int Gk;
         do {
-            computeDvAll();
             for (int i = 0; i < nHalf; i++) {
                 swaps.add(singleSwap());
             }
-
             Gk = swaps.get(0).cost;
             int kBestStep = 0;
             for (int i = 1, tempGk; i < nHalf; i++) {
@@ -103,13 +101,6 @@ public class KernighanLin {
         bestEdgeVertexInB.setLock(true);
         swap(bestEdgeVertexInA, bestEdgeVertexInB);
         return new Swap(bestEdgeVertexInB, bestEdgeVertexInA, bipartitionCutCost());
-    }
-
-    private void computeDvAll() {
-        for (Vertex v : graph.vertices) {
-            if (!v.isLock())
-                v.setDvCostReduction(vertexCost(v));
-        }
     }
 
     int bipartitionCutCost() {

@@ -6,7 +6,6 @@ import java.util.List;
 public class Vertex {
     private int id;
     private List<Integer> neighbours;
-    private int DvCostReduction;
     private boolean lock = false;
 
     Vertex(int id) {
@@ -28,14 +27,6 @@ public class Vertex {
 
     int getId() {
         return id;
-    }
-
-    public int getDvCostReduction() {
-        return DvCostReduction;
-    }
-
-    public void setDvCostReduction(int dvCostReduction) {
-        this.DvCostReduction = dvCostReduction;
     }
 
     public boolean isLock() {
