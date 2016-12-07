@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Vertex implements Comparable<Vertex> {
-    private int id;
-    private List<Integer> neighbours;
+    private final int id;
+    private final List<Integer> neighbours;
     private boolean lock = false;
 
     public Vertex(int id) {

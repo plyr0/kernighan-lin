@@ -1,9 +1,9 @@
 package bipartition.model;
 
 public class SwapOffer {
-    public Vertex a;
-    public Vertex b;
-    public int cost;
+    private final Vertex a;
+    private final Vertex b;
+    private final int cost;
 
     public SwapOffer(Vertex a, Vertex b, int cost) {
         this.a = a;
@@ -18,5 +18,17 @@ public class SwapOffer {
                 ", b=" + b +
                 ", sumCost=" + cost +
                 '}';
+    }
+
+    public Vertex getA() {
+        return a;
+    }
+
+    public Vertex getB() {
+        return b;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }

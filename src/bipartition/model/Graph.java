@@ -6,8 +6,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Graph {
-    private List<Vertex> vertices;
-    private SortedSet<Edge> edges;
+    private final List<Vertex> vertices;
+    private final SortedSet<Edge> edges;
 
     public Graph(int n) {
         vertices = new ArrayList<>(n);

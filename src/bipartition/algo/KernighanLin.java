@@ -12,8 +12,9 @@ public class KernighanLin {
     private List<Vertex> A;
     private List<Vertex> B;
     private List<SwapOffer> swapOffers;
-    private Graph graph;
-    private int n, nHalf;
+    private final Graph graph;
+    private final int n;
+    private final int nHalf;
 
     public KernighanLin(Graph g) {
         graph = g;
@@ -27,8 +28,7 @@ public class KernighanLin {
     private void preliminaryBipartition(Graph g) {
         for (int i = 0; i < n; i++) {
             Vertex v = g.getVertices().get(i);
-            if (i % 2 == 0) A.add(v);
-            else B.add(v);
+            (i % 2 == 0 ? A : B).add(v);
         }
     }
 
@@ -50,7 +50,7 @@ public class KernighanLin {
             int bestStep = -1;
             int sum = 0;
             for (int i = 0; i < nHalf; i++) {
-                sum += swapOffers.get(i).cost;
+                sum += swapOffers.get(i).getCost();
                 if (sum > bestSum) {
                     bestSum = sum;
                     bestStep = i;
@@ -59,7 +59,7 @@ public class KernighanLin {
             if (bestSum > 0) {
                 for (int i = 0; i <= bestStep; i++) {
                     SwapOffer s = swapOffers.get(i);
-                    swap(s.a, s.b);
+                    swap(s.getA(), s.getB());
                 }
             }
             unlockAllVertices();
@@ -118,7 +118,7 @@ public class KernighanLin {
         return costAll;
     }
 
-    public int vertexCost(Vertex vertex) {
+    private int vertexCost(Vertex vertex) {
         int external = 0;
         int internal = 0;
         boolean subsetA1 = A.contains(vertex);
@@ -144,7 +144,7 @@ public class KernighanLin {
         return false;
     }
 
-    public void swap(Vertex v1, Vertex v2) {
+    private void swap(Vertex v1, Vertex v2) {
         assert isInSubsetA(v1.getId());
         assert !isInSubsetA(v2.getId());
         A.remove(v1);

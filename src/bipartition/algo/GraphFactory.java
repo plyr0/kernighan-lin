@@ -6,7 +6,7 @@ import bipartition.model.Vertex;
 import java.util.Random;
 
 public class GraphFactory {
-    private static Random random = new Random();
+    private static final Random random = new Random();
     private static boolean isNonWeightedGraph = false;
 
     public static Graph generate(int vertices, float densityClicque) {
