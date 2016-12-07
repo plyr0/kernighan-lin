@@ -33,10 +33,10 @@ public class KernighanLin {
         System.out.println(g.toString());
         KernighanLin kernighanLin = new KernighanLin(g);
         System.out.println(kernighanLin.toString());
-        Visualizer.visualize(kernighanLin, "pre");
+        Visualizer.visualize(kernighanLin, "pre " + kernighanLin.bipartitionCutCost());
         kernighanLin.kernighanLin();
         System.out.println(kernighanLin.toString());
-        Visualizer.visualize(kernighanLin, "post");
+        Visualizer.visualize(kernighanLin, "post " + kernighanLin.bipartitionCutCost());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class KernighanLin {
                 }
             }
             cancelSwapsFrom(kBestStep);
-            for(Vertex v : graph.vertices){
+            for (Vertex v : graph.vertices) {
                 v.setLock(false);
             }
         } while (Gk <= 0);
