@@ -1,5 +1,3 @@
-// http://users.eecs.northwestern.edu/~haizhou/357/lec2.pdf
-// https://github.com/JakeCoxon/kernighan-lin
 package bipartition;
 
 import bipartition.algo.GraphFactory;
