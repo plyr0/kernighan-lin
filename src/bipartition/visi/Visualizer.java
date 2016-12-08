@@ -1,4 +1,4 @@
-package bipartition;
+package bipartition.visi;
 
 import bipartition.algo.KernighanLin;
 import bipartition.model.Edge;
@@ -11,11 +11,13 @@ import org.graphstream.ui.view.Viewer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-class Visualizer {
-    public static void visualize(KernighanLin kernighanLin, String text) {
+public class Visualizer implements Visualizerable {
+
+    @Override
+    public void visualize(KernighanLin kernighanLin, String text) {
         Graph data = kernighanLin.getGraph();
         SingleGraph graph = new SingleGraph("kcolor");
-        System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
+        //graph.addAttribute("ui.stylesheet", "graph { fill-color: #ffe6ff; }");
 
         for (int i = 0; i < data.getVertices().size(); i++) {
             Node node = graph.addNode(Integer.toString(i));
@@ -30,9 +32,9 @@ class Visualizer {
 
             if (kernighanLin.isInSubsetA(v1) == kernighanLin.isInSubsetA(v2)) {
                 if (kernighanLin.isInSubsetA(v1)) {
-                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(0, 0, 128);");
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: Navy;");
                 } else {
-                    edge.addAttribute("ui.style", "shape: blob; fill-color: rgb(128, 0, 0);");
+                    edge.addAttribute("ui.style", "shape: blob; fill-color: #800000;");
                 }
             }
         }
@@ -56,9 +58,9 @@ class Visualizer {
 
     private static void stylizeNode(Node node, boolean isInA) {
         if (isInA) {
-            node.addAttribute("ui.style", "fill-color: rgb(0,0,255); text-color: rgb(255,255,0); size: 15px;");
+            node.addAttribute("ui.style", "fill-color: Blue; text-color: Yellow; size: 15px;");
         } else {
-            node.addAttribute("ui.style", "fill-color: rgb(255,0,0); text-color: rgb(255,255,0); size: 15px;");
+            node.addAttribute("ui.style", "fill-color: Red; text-color: Yellow; size: 15px;");
         }
     }
 }
