@@ -1,6 +1,7 @@
 My home assignment for 06-ZOPDLI0
 
 Bipartition weighted/unweighted graph at lowest cut cost.
+You will need graphstream libraries for visualization.
  
 sources:
 
