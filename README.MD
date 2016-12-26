@@ -7,3 +7,5 @@ sources:
 http://users.eecs.northwestern.edu/~haizhou/357/lec2.pdf
 
 https://github.com/JakeCoxon/kernighan-lin
+
+![GitHub Logo](/sshot.png)
